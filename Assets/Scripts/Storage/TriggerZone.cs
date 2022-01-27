@@ -9,7 +9,7 @@ public class TriggerZone : MonoBehaviour
 
     private void Start()
     {
-        if(linkedStorage == null)
+        if (linkedStorage == null)
         {
             linkedStorage = transform.parent.GetComponent<Storage>();
         }
@@ -28,16 +28,10 @@ public class TriggerZone : MonoBehaviour
         switch ((int)zoneType)
         {
             case (int)ZoneTypes.Get:
-                if(otherStorage.Receiving)
-                {
-                    otherStorage.SetItem(linkedStorage.GetItem());
-                }
+                otherStorage.SetItem(linkedStorage.GetItem());
                 break;
             case (int)ZoneTypes.Set:
-                if(linkedStorage.Receiving)
-                {
-                    linkedStorage.SetItem(otherStorage.GetItem());
-                }
+                linkedStorage.SetItem(otherStorage.GetItem());
                 break;
         }
     }

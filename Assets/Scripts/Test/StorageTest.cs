@@ -6,6 +6,7 @@ public class StorageTest : MonoBehaviour
 {
     public Storage storage;
     public ItemsBase testObject;
+    private int itemIntex = 0;
 
     public void FillTest()
     {
@@ -14,17 +15,15 @@ public class StorageTest : MonoBehaviour
 
     private void Start()
     {
-        InvokeRepeating("Setter", 1.0f,1f);
+        InvokeRepeating("Setter", 1.0f, 1f);
     }
 
     private void Setter()
     {
         ItemsBase testItem = Instantiate(testObject, null);
+        testItem.name = $"{itemIntex++}";
 
-        if (storage.Receiving)
-        {
-            storage.SetItem(testItem);
-        }
+        storage.SetItem(testItem);
 
         //storage.SetItem(testItem);
     }

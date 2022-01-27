@@ -13,20 +13,14 @@ public class Storage : MonoBehaviour
     [SerializeField] private float _cellSpacing;
     [SerializeField] private float _yOffset;
 
-    private GameObject[] _storageCellPositions;
+    private GameObject[] _storageCellobj;
     private ItemsBase[] _storagedObjects;
 
     private int _storageEmptyPointer;
 
-    private bool _receiving = true;
-    private ItemsBase deliveringItem;
-
-    public ItemsBase[] StorageTypes { get => _storageTypes; set => _storageTypes = value; }
-    public bool Receiving { get => _receiving; set => _receiving = value; }
-
     private void Start()
     {
-        _storageCellPositions = new GameObject[_xSize * _ySize * _zSize];
+        _storageCellobj = new GameObject[_xSize * _ySize * _zSize];
         _storagedObjects = new ItemsBase[_xSize * _ySize * _zSize];
 
         _storageEmptyPointer = 0;
@@ -54,7 +48,7 @@ public class Storage : MonoBehaviour
                         transform.position.z + (_cellSpacing * z)
                         );
 
-                    _storageCellPositions[pointer] = cell;
+                    _storageCellobj[pointer] = cell;
 
                     pointer++;
                 }
@@ -64,41 +58,27 @@ public class Storage : MonoBehaviour
 
     private void Update()
     {
-        Delivery();
     }
 
-    private void Delivery()
-    {
-        if (_receiving == false)
-        {
-            GameObject targetCell = _storageCellPositions[_storageEmptyPointer];
-
-            deliveringItem.transform.position = Vector3.Lerp(deliveringItem.transform.position, targetCell.transform.position, Time.deltaTime * 10f);
-
-            if (Vector3.Distance(deliveringItem.transform.position, targetCell.transform.position) < 0.01f) //can be optimized
-            {
-                deliveringItem.transform.SetParent(targetCell.transform);
-                _receiving = true;
-
-                FinishDelivery();
-            }
-        }
-    }
 
     public ItemsBase GetItem()
     {
-        int tempPointer =  _storageEmptyPointer;
+        int tempPointer = _storageEmptyPointer;
 
-        _storageEmptyPointer--;
+        if(_storageEmptyPointer > 0) _storageEmptyPointer--;
 
-        return _storagedObjects[tempPointer];
+        ItemsBase itemToExport = _storagedObjects[tempPointer];
+
+        _storagedObjects[tempPointer] = null;
+
+        return itemToExport;
     }
 
     public void SetItem(ItemsBase storagableObject)
     {
-        if (_storageEmptyPointer < _storagedObjects.Length)
+        if (_storageEmptyPointer < _storagedObjects.Length && storagableObject)
         {
-            StartDelivery(storagableObject);
+            AddItemToStorage(storagableObject);
         }
         else
         {
@@ -106,15 +86,12 @@ public class Storage : MonoBehaviour
         }
     }
 
-    private void StartDelivery(ItemsBase targetObj)
+    private void AddItemToStorage(ItemsBase targetItem)
     {
-        _receiving = false;
-        deliveringItem = targetObj;
-    }
+        _storagedObjects[_storageEmptyPointer] = targetItem;
+        targetItem.transform.SetParent(_storageCellobj[_storageEmptyPointer].transform);
+        targetItem.transform.localPosition = Vector3.zero;
 
-    private void FinishDelivery()
-    {
-        _storagedObjects[_storageEmptyPointer] = deliveringItem;
         _storageEmptyPointer++;
     }
 }
