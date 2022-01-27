@@ -6,12 +6,16 @@ public class Storage : MonoBehaviour
 {
     [SerializeField] private Item[] _storageTypes;
 
-    [SerializeField] private int _xSize;
-    [SerializeField] private int _ySize;
-    [SerializeField] private int _zSize;
+    [SerializeField] private int _xSize = 1;
+    [SerializeField] private int _ySize = 1;
+    [SerializeField] private int _zSize = 1;
 
-    [SerializeField] private float _cellSpacing;
-    [SerializeField] private float _yOffset;
+    [SerializeField] private float _yOffset = 0;
+    [SerializeField] private float _xOffset = 0;
+    [SerializeField] private float _zOffset = 0;
+
+    [SerializeField] private float _cellSpacing = 1;
+
 
     private GameObject[] _storageCellobj;
     private Item[] _storagedObjects;
@@ -46,9 +50,9 @@ public class Storage : MonoBehaviour
                     cell.transform.SetParent(transform);
 
                     cell.transform.position = new Vector3(
-                        transform.position.x + (_cellSpacing * x),
+                        transform.position.x + _xOffset + (_cellSpacing * x),
                         transform.position.y + _yOffset + (_cellSpacing * y),
-                        transform.position.z + (_cellSpacing * z)
+                        transform.position.z + _zOffset + (_cellSpacing * z)
                         );
 
                     _storageCellobj[pointer] = cell;
@@ -76,8 +80,6 @@ public class Storage : MonoBehaviour
 
             itemToExport?.transform.SetParent(null);
 
-            //Full = false;
-
             return itemToExport;
         }
         else
@@ -88,7 +90,7 @@ public class Storage : MonoBehaviour
 
     public void SendTo(Storage destStorage)
     {
-        if (!destStorage.Full && !destStorage.Delivering)
+        if (!destStorage.CheckFullness() && !destStorage.Delivering)
         {
             destStorage.SetItem(GetItem());
         }
@@ -102,19 +104,9 @@ public class Storage : MonoBehaviour
             {
                 StartDelivery(storagableItem);
             }
-
-            if(_storageEmptyPointer >= _storagedObjects.Length)
-            {
-                Full = true;
-            }
-            else
-            {
-                Full = false;
-            }
         }
         else
         {
-            
             //overflow event
         }
     }
@@ -137,5 +129,17 @@ public class Storage : MonoBehaviour
     private void FinishDelivery()
     {
         Delivering = false;
+    }
+
+    public bool CheckFullness()
+    {
+        if (_storageEmptyPointer >= _storagedObjects.Length)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }

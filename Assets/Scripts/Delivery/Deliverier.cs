@@ -35,6 +35,7 @@ public class Deliverier : MonoBehaviour
         {
             deliveringObj.transform.SetParent(targetObj.transform);
             deliveringObj.transform.localPosition = Vector3.zero;
+            deliveringObj.transform.localRotation = Quaternion.identity;
 
             Delivered?.Invoke();
 
