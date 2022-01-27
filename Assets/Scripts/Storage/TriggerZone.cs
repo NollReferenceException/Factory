@@ -23,7 +23,6 @@ public class TriggerZone : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("trigger");
         Storage otherStorage = other.GetComponentInChildren<Storage>();
 
         switch ((int)zoneType)
