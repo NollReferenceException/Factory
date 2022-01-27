@@ -76,7 +76,7 @@ public class Storage : MonoBehaviour
 
             itemToExport?.transform.SetParent(null);
 
-            Full = false;
+            //Full = false;
 
             return itemToExport;
         }
@@ -88,7 +88,7 @@ public class Storage : MonoBehaviour
 
     public void SendTo(Storage destStorage)
     {
-        if(!destStorage.Full && !destStorage.Delivering)
+        if (!destStorage.Full && !destStorage.Delivering)
         {
             destStorage.SetItem(GetItem());
         }
@@ -96,19 +96,26 @@ public class Storage : MonoBehaviour
 
     public void SetItem(Item storagableItem)
     {
+        if (_storageEmptyPointer < _storagedObjects.Length)
         {
-            if (_storageEmptyPointer < _storagedObjects.Length)
+            if (storagableItem)
             {
-                if(storagableItem)
-                {
-                    StartDelivery(storagableItem);
-                }
+                StartDelivery(storagableItem);
+            }
+
+            if(_storageEmptyPointer >= _storagedObjects.Length)
+            {
+                Full = true;
             }
             else
             {
-                Full = true;
-                //overflow event
+                Full = false;
             }
+        }
+        else
+        {
+            
+            //overflow event
         }
     }
 
