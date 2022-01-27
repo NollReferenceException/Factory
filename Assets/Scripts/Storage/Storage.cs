@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Storage : MonoBehaviour
 {
-    [SerializeField] private ItemsBase[] _storageTypes;
+    [SerializeField] private Item[] _storageTypes;
 
     [SerializeField] private int _xSize;
     [SerializeField] private int _ySize;
@@ -14,14 +14,17 @@ public class Storage : MonoBehaviour
     [SerializeField] private float _yOffset;
 
     private GameObject[] _storageCellobj;
-    private ItemsBase[] _storagedObjects;
+    private Item[] _storagedObjects;
 
     private int _storageEmptyPointer;
+
+    public bool Delivering { get; private set; }
+    public bool Full { get; private set; }
 
     private void Start()
     {
         _storageCellobj = new GameObject[_xSize * _ySize * _zSize];
-        _storagedObjects = new ItemsBase[_xSize * _ySize * _zSize];
+        _storagedObjects = new Item[_xSize * _ySize * _zSize];
 
         _storageEmptyPointer = 0;
 
@@ -58,40 +61,74 @@ public class Storage : MonoBehaviour
 
     private void Update()
     {
+        //Debug.Log($"{_storageEmptyPointer} --- {_storagedObjects.Length}");
     }
 
-
-    public ItemsBase GetItem()
+    private Item GetItem()
     {
-        int tempPointer = _storageEmptyPointer;
-
-        if(_storageEmptyPointer > 0) _storageEmptyPointer--;
-
-        ItemsBase itemToExport = _storagedObjects[tempPointer];
-
-        _storagedObjects[tempPointer] = null;
-
-        return itemToExport;
-    }
-
-    public void SetItem(ItemsBase storagableObject)
-    {
-        if (_storageEmptyPointer < _storagedObjects.Length && storagableObject)
+        if (!Delivering)
         {
-            AddItemToStorage(storagableObject);
+            if (_storageEmptyPointer > 0) _storageEmptyPointer--;
+
+            Item itemToExport = _storagedObjects[_storageEmptyPointer];
+
+            _storagedObjects[_storageEmptyPointer] = null;
+
+            itemToExport?.transform.SetParent(null);
+
+            Full = false;
+
+            return itemToExport;
         }
         else
         {
-            //overflow event
+            return null;
         }
     }
 
-    private void AddItemToStorage(ItemsBase targetItem)
+    public void SendTo(Storage destStorage)
     {
+        if(!destStorage.Full && !destStorage.Delivering)
+        {
+            destStorage.SetItem(GetItem());
+        }
+    }
+
+    public void SetItem(Item storagableItem)
+    {
+        {
+            if (_storageEmptyPointer < _storagedObjects.Length)
+            {
+                if(storagableItem)
+                {
+                    StartDelivery(storagableItem);
+                }
+            }
+            else
+            {
+                Full = true;
+                //overflow event
+            }
+        }
+    }
+
+    private void StartDelivery(Item targetItem)
+    {
+        Delivering = true;
+
         _storagedObjects[_storageEmptyPointer] = targetItem;
-        targetItem.transform.SetParent(_storageCellobj[_storageEmptyPointer].transform);
-        targetItem.transform.localPosition = Vector3.zero;
+
+        Deliverier delivelier = new GameObject("Delivelier").AddComponent<Deliverier>();
+        delivelier.Init(targetItem, _storageCellobj[_storageEmptyPointer]);
+        delivelier.Delivered += FinishDelivery;
+
+        delivelier.transform.SetParent(transform);
 
         _storageEmptyPointer++;
+    }
+
+    private void FinishDelivery()
+    {
+        Delivering = false;
     }
 }

@@ -1,24 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Deliverier : MonoBehaviour
 {
-    private readonly GameObject deliveringObj;
-    private GameObject targetCell;
-    private readonly Vector3 destPoint;
+    private Item deliveringObj;
+    private GameObject targetObj;
 
-    public Deliverier(GameObject deliveringObj, GameObject targetCell, Vector3 destPoint)
+    public UnityAction Delivered { get; set; }
+
+    public void Init(Item deliveringObj, GameObject targetObj)
     {
         this.deliveringObj = deliveringObj;
-        this.targetCell = targetCell;
-        this.destPoint = destPoint;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
+        this.targetObj = targetObj;
 
+        deliveringObj.transform.SetParent(null);
     }
+    
 
     // Update is called once per frame
     void Update()
@@ -28,12 +27,16 @@ public class Deliverier : MonoBehaviour
 
     private void Delivery()
     {
-        deliveringObj.transform.position = Vector3.Lerp(deliveringObj.transform.position, destPoint, Time.deltaTime * 10f);
+        deliveringObj.transform.position = Vector3.MoveTowards(deliveringObj.transform.position, targetObj.transform.position, Time.deltaTime * 10f);
 
-        if (Vector3.Distance(deliveringObj.transform.position, targetCell.transform.position) < 0.01f) //can be optimized
+        if (Vector3.Distance(deliveringObj.transform.position, targetObj.transform.position) < 0.01f) //can be optimized
         {
-            deliveringObj.transform.SetParent(targetCell.transform);
+            deliveringObj.transform.SetParent(targetObj.transform);
+            deliveringObj.transform.localPosition = Vector3.zero;
 
+            Delivered?.Invoke();
+
+            Destroy(gameObject);
         }
     }
 }

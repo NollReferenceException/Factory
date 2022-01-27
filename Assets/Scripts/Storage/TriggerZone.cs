@@ -23,15 +23,16 @@ public class TriggerZone : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        Debug.Log("trigger");
         Storage otherStorage = other.GetComponentInChildren<Storage>();
 
         switch ((int)zoneType)
         {
             case (int)ZoneTypes.Get:
-                otherStorage.SetItem(linkedStorage.GetItem());
+                linkedStorage.SendTo(otherStorage);
                 break;
             case (int)ZoneTypes.Set:
-                linkedStorage.SetItem(otherStorage.GetItem());
+                otherStorage.SendTo(linkedStorage);
                 break;
         }
     }

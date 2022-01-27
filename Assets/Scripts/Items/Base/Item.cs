@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Oil : Item 
+public abstract class Item : MonoBehaviour, IStoragable
 {
     
 }

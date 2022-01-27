@@ -5,26 +5,19 @@ using UnityEngine;
 public class StorageTest : MonoBehaviour
 {
     public Storage storage;
-    public ItemsBase testObject;
+    public Item testObject;
     private int itemIntex = 0;
-
-    public void FillTest()
-    {
-
-    }
 
     private void Start()
     {
-        InvokeRepeating("Setter", 1.0f, 1f);
+        InvokeRepeating("StorageFiller", 1.0f, 1f);
     }
 
-    private void Setter()
+    private void StorageFiller()
     {
-        ItemsBase testItem = Instantiate(testObject, null);
+        Item testItem = Instantiate(testObject, null);
         testItem.name = $"{itemIntex++}";
 
         storage.SetItem(testItem);
-
-        //storage.SetItem(testItem);
     }
 }
