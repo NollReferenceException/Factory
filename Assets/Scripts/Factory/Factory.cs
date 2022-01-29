@@ -68,19 +68,24 @@ public class Factory : BaseFactory
 
             for (int i = 0; i < inPutStorages.Length; i++)
             {
-                if (!inPutStorages[i].ItemsToProduction())
+                if (!inPutStorages[i].CheckRequestedQuantityItems())
                 {
-                    Debug.Log(inPutStorages[i].ItemsToProduction());
                     creatingAllowed = false;
                 }
             }
 
             if (creatingAllowed)
             {
+                for (int i = 0; i < inPutStorages.Length; i++)
+                {
+                    inPutStorages[i].ItemsToProduction();
+                }
+
                 Item item = Instantiate(product, transform);
-                outPutStorage.PutInItem(item);
 
                 yield return new WaitForSeconds(productionSpeedFactory * item.ProductionSpeed);
+
+                outPutStorage.PutInItem(item);
             }
             else
             {
@@ -94,9 +99,10 @@ public class Factory : BaseFactory
         while (!outPutStorage.CheckOverflow())
         {
             Item item = Instantiate(product, transform);
-            outPutStorage.PutInItem(item);
 
             yield return new WaitForSeconds(productionSpeedFactory * item.ProductionSpeed);
+
+            outPutStorage.PutInItem(item);
         }
     }
 }

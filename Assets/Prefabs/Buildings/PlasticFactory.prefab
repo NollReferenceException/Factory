@@ -51,6 +51,7 @@ MonoBehaviour:
   _xOffset: 0.3
   _zOffset: 0.3
   _cellSpacing: 0.6
+  requestedQuantity: 2
 --- !u!1 &2760487577289058704
 GameObject:
   m_ObjectHideFlags: 0
@@ -416,7 +417,7 @@ MonoBehaviour:
   - {fileID: 752046516921166344}
   outPutStorage: {fileID: 8384846682428879113}
   product: {fileID: 4803258735353654200, guid: 393985aa3f5fc434497ef138ee4b0f92, type: 3}
-  productionSpeed: 0.7
+  productionSpeedFactory: 1
 --- !u!1 &5821435447466960671
 GameObject:
   m_ObjectHideFlags: 0
@@ -500,6 +501,7 @@ MonoBehaviour:
   _xOffset: 0.3
   _zOffset: 0.3
   _cellSpacing: 0.6
+  requestedQuantity: 1
 --- !u!1 &6735041245028664968
 GameObject:
   m_ObjectHideFlags: 0

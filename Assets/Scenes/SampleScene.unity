@@ -439,6 +439,7 @@ MonoBehaviour:
   _xOffset: 0
   _zOffset: 0
   _cellSpacing: 0.6
+  requestedQuantity: 1
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1022,7 +1023,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 327444126788228732, guid: 052cbed3971de314494c8ddfd81ebc63, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -13.17
       objectReference: {fileID: 0}
     - target: {fileID: 327444126788228732, guid: 052cbed3971de314494c8ddfd81ebc63, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1064,6 +1065,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlasticFactory
       objectReference: {fileID: 0}
+    - target: {fileID: 4630197450195153099, guid: 052cbed3971de314494c8ddfd81ebc63, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 052cbed3971de314494c8ddfd81ebc63, type: 3}
 --- !u!1001 &6341242112117251891
@@ -1077,13 +1082,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: BottleFactory
       objectReference: {fileID: 0}
+    - target: {fileID: 2212499214954591800, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6096301655175212283, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
+      propertyPath: requestedQuantity
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 6520918613837205647, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6520918613837205647, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.95
+      value: 0.09
       objectReference: {fileID: 0}
     - target: {fileID: 6520918613837205647, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
       propertyPath: m_LocalPosition.y

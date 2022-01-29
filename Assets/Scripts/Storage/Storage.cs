@@ -99,6 +99,30 @@ public class Storage : MonoBehaviour
         }
         else
         {
+            if(CheckRequestedQuantityItems())
+            {
+                for (int j = 0; j < requestedQuantity; j++)
+                {
+                    Destroy(GetLastItem().gameObject);
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+    }
+
+    public bool CheckRequestedQuantityItems()
+    {
+        if (Delivering)
+        {
+            return false;
+        }
+        else
+        {
             int itemsFoundedCounter = 0;
 
             for (int i = 0; i < _storagedObjects.Length; i++)
@@ -109,11 +133,6 @@ public class Storage : MonoBehaviour
 
                     if (itemsFoundedCounter >= requestedQuantity)
                     {
-                        for (int j = 0; j < itemsFoundedCounter; j++)
-                        {
-                            Destroy(GetLastItem().gameObject);
-                        }
-
                         return true;
                     }
                 }
