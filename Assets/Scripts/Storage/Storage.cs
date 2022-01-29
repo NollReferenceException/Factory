@@ -16,6 +16,9 @@ public class Storage : MonoBehaviour
 
     [SerializeField] private float _cellSpacing = 1;
 
+    [SerializeField] private int requestedQuantity = 1;
+
+    private bool initialized;
 
     private GameObject[] _storageCellobj;
     private Item[] _storagedObjects;
@@ -25,17 +28,30 @@ public class Storage : MonoBehaviour
     public bool Delivering { get; private set; }
     public bool Full { get; private set; }
 
-    private void Start()
+    private void Awake()
     {
-        _storageCellobj = new GameObject[_xSize * _ySize * _zSize];
-        _storagedObjects = new Item[_xSize * _ySize * _zSize];
-
-        _storageEmptyPointer = 0;
-
-        GenerateStorage();
+        Init();
     }
 
-    void GenerateStorage()
+    public void Init()
+    {
+        if (initialized)
+        {
+            return;
+        }
+        else
+        {
+            _storageCellobj = new GameObject[_xSize * _ySize * _zSize];
+            _storagedObjects = new Item[_xSize * _ySize * _zSize];
+
+            _storageEmptyPointer = 0;
+
+            GenerateStorage();
+
+            initialized = true;
+        }
+    }
+    private void GenerateStorage()
     {
         int pointer = 0;
 
@@ -63,14 +79,83 @@ public class Storage : MonoBehaviour
         }
     }
 
-    private void Update()
+    public bool CheckOverflow()
     {
-        //Debug.Log($"{_storageEmptyPointer} --- {_storagedObjects.Length}");
+        if (_storageEmptyPointer >= _storagedObjects.Length)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
-    private Item GetItem()
+    public bool ItemsToProduction()
     {
-        if (!Delivering)
+        if (Delivering)
+        {
+            return false;
+        }
+        else
+        {
+            int itemsFoundedCounter = 0;
+
+            for (int i = 0; i < _storagedObjects.Length; i++)
+            {
+                if (_storagedObjects[i])
+                {
+                    itemsFoundedCounter++;
+
+                    if (itemsFoundedCounter >= requestedQuantity)
+                    {
+                        for (int j = 0; j < itemsFoundedCounter; j++)
+                        {
+                            Destroy(GetLastItem().gameObject);
+                        }
+
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+    }
+
+    public void SendTo(Storage destStorage)
+    {
+        if (destStorage.CheckOverflow() || destStorage.Delivering)
+        {
+            return;
+        }
+        else
+        {
+            destStorage.PutInItem(GetLastItem());
+        }
+    }
+
+    public void PutInItem(Item storagableItem)
+    {
+        if (CheckOverflow())
+        {
+            //overflow event
+        }
+        else
+        {
+            if (storagableItem)
+            {
+                StartDelivery(storagableItem);
+            }
+        }
+    }
+    private Item GetLastItem()
+    {
+        if (Delivering)
+        {
+            return null;
+        }
+        else
         {
             if (_storageEmptyPointer > 0) _storageEmptyPointer--;
 
@@ -81,33 +166,6 @@ public class Storage : MonoBehaviour
             itemToExport?.transform.SetParent(null);
 
             return itemToExport;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public void SendTo(Storage destStorage)
-    {
-        if (!destStorage.CheckFullness() && !destStorage.Delivering)
-        {
-            destStorage.SetItem(GetItem());
-        }
-    }
-
-    public void SetItem(Item storagableItem)
-    {
-        if (_storageEmptyPointer < _storagedObjects.Length)
-        {
-            if (storagableItem)
-            {
-                StartDelivery(storagableItem);
-            }
-        }
-        else
-        {
-            //overflow event
         }
     }
 
@@ -129,17 +187,5 @@ public class Storage : MonoBehaviour
     private void FinishDelivery()
     {
         Delivering = false;
-    }
-
-    public bool CheckFullness()
-    {
-        if (_storageEmptyPointer >= _storagedObjects.Length)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 }

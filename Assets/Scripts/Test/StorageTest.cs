@@ -18,6 +18,6 @@ public class StorageTest : MonoBehaviour
         Item testItem = Instantiate(testObject, null);
         testItem.name = $"{itemIntex++}";
 
-        storage.SetItem(testItem);
+        storage.PutInItem(testItem);
     }
 }
