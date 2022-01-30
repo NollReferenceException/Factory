@@ -9,7 +9,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float _rotationSpeed;
     [SerializeField] private Camera playerCamera;
 
-
     private CharacterController _characterController;
 
     private Vector3 _direction;

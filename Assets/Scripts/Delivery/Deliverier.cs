@@ -33,13 +33,18 @@ public class Deliverier : MonoBehaviour
 
         if (Vector3.Distance(deliveringObj.transform.position, targetObj.transform.position) < 0.01f) //can be optimized
         {
-            deliveringObj.transform.SetParent(targetObj.transform);
-            deliveringObj.transform.localPosition = Vector3.zero;
-            deliveringObj.transform.localRotation = Quaternion.identity;
-
-            Delivered?.Invoke();
-
-            Destroy(gameObject);
+            DeliveryComplited();
         }
+    }
+
+    private void DeliveryComplited()
+    {
+        deliveringObj.transform.SetParent(targetObj.transform);
+        deliveringObj.transform.localPosition = Vector3.zero;
+        deliveringObj.transform.localRotation = Quaternion.identity;
+
+        Delivered?.Invoke();
+
+        Destroy(gameObject);
     }
 }
