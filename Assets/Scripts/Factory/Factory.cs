@@ -8,11 +8,12 @@ public class Factory : BaseFactory
     [SerializeField] private Storage outPutStorage;
 
     [SerializeField] private Item product;
-    [Range(0.1f, 9999f)] [SerializeField] private float productionSpeedFactory = 1;
+    [Range(0.5f, 9999f)] [SerializeField] private float productionSpeedFactory = 1;
 
     private Coroutine productionCoroutine;
 
-    bool creatingAllowed = true;
+    private Notice factoryNotice;
+    private string alertMessage;
 
 
     private void Start()
@@ -22,6 +23,7 @@ public class Factory : BaseFactory
 
     private void Init()
     {
+        InitNotice();
         InitStorages();
         StartProduction();
     }
@@ -34,6 +36,11 @@ public class Factory : BaseFactory
         }
 
         outPutStorage.Init();
+    }
+
+    private void InitNotice()
+    {
+        factoryNotice = UIManager.Instance.NoticePanel.CreateNotice();
     }
 
     public void StopProduction()
@@ -50,59 +57,90 @@ public class Factory : BaseFactory
 
     public void StartProduction()
     {
-        if (inPutStorages.Length > 0)
-        {
-            productionCoroutine = StartCoroutine(Craft());
-        }
-        else
-        {
-            productionCoroutine = StartCoroutine(Create());
-        }
+        productionCoroutine = StartCoroutine(Craft());
     }
 
     private IEnumerator Craft()
     {
-        while (!outPutStorage.CheckOverflow())
+        while (true)
         {
-            creatingAllowed = true;
-
-            for (int i = 0; i < inPutStorages.Length; i++)
+            if (StockAvailabilityCheck() && outPutStorage.CheckFreeSlots())
             {
-                if (!inPutStorages[i].CheckRequestedQuantityItems())
-                {
-                    creatingAllowed = false;
-                }
-            }
+                NoticeRevoke();
 
-            if (creatingAllowed)
-            {
-                for (int i = 0; i < inPutStorages.Length; i++)
-                {
-                    inPutStorages[i].ItemsToProduction();
-                }
+                GetItemsFromStorages();
 
-                Item item = Instantiate(product, transform);
+                yield return Produce();
 
-                yield return new WaitForSeconds(productionSpeedFactory * item.ProductionSpeed);
-
-                outPutStorage.PutInItem(item);
             }
             else
             {
+                if (!StockAvailabilityCheck())
+                {
+                    NotEnoughItemsNoticeVoke();
+                }
+                else if (!outPutStorage.CheckFreeSlots())
+                {
+                    StorageOverFlowNoticeVoke();
+                }
+
                 yield return new WaitForSeconds(0.5f);
             }
         }
     }
 
-    private IEnumerator Create()
+    private IEnumerator Produce()
     {
-        while (!outPutStorage.CheckOverflow())
+        Item item = Instantiate(product, transform);
+
+        yield return new WaitForSeconds(productionSpeedFactory * item.ProductionSpeed);
+
+        outPutStorage.PutInItem(item);
+    }
+
+    private void NoticeRevoke()
+    {
+        factoryNotice.Hide();
+    }
+
+    private void StorageOverFlowNoticeVoke()
+    {
+        alertMessage = "Output storage overflow";
+
+        SendNotice();
+    }
+
+    private void NotEnoughItemsNoticeVoke()
+    {
+        alertMessage = "Input storages have not enough items";
+
+        SendNotice();
+    }
+
+    private void SendNotice()
+    {
+        factoryNotice.SetMessage($"{gameObject.name} : {alertMessage}");
+        factoryNotice.Show();
+    }
+
+    private bool StockAvailabilityCheck()
+    {
+        for (int i = 0; i < inPutStorages.Length; i++)
         {
-            Item item = Instantiate(product, transform);
+            if (!inPutStorages[i].CheckRequestedQuantityItems())
+            {
+                return false;
+            }
+        }
 
-            yield return new WaitForSeconds(productionSpeedFactory * item.ProductionSpeed);
+        return true;
+    }
 
-            outPutStorage.PutInItem(item);
+    private void GetItemsFromStorages()
+    {
+        for (int i = 0; i < inPutStorages.Length; i++)
+        {
+            inPutStorages[i].ItemsToProduction();
         }
     }
 }

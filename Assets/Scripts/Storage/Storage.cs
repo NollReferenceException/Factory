@@ -81,15 +81,15 @@ public class Storage : MonoBehaviour
         }
     }
 
-    public bool CheckOverflow()
+    public bool CheckFreeSlots()
     {
         if (_storageEmptyPointer >= _storagedObjects.Length)
         {
-            return true;
+            return false;
         }
         else
         {
-            return false;
+            return true;
         }
     }
 
@@ -146,7 +146,7 @@ public class Storage : MonoBehaviour
 
     public void SendItemTo(Storage destStorage)
     {
-        if (destStorage.CheckOverflow() || destStorage.Delivering)
+        if (!destStorage.CheckFreeSlots() || destStorage.Delivering)
         {
             return;
         }
@@ -161,16 +161,16 @@ public class Storage : MonoBehaviour
 
     public void PutInItem(Item storagableItem)
     {
-        if (CheckOverflow())
-        {
-            //overflow event
-        }
-        else
+        if (CheckFreeSlots())
         {
             if (storagableItem)
             {
                 StartDelivery(storagableItem);
             }
+        }
+        else
+        {
+            //overflow event
         }
     }
 
