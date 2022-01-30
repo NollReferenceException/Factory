@@ -93,11 +93,11 @@ public class Storage : MonoBehaviour
         }
     }
 
-    public bool ItemsToProduction()
+    public void ItemsToProduction()
     {
         if (Delivering)
         {
-            return false;
+            return;
         }
         else
         {
@@ -107,12 +107,6 @@ public class Storage : MonoBehaviour
                 {
                     Destroy(ExtractLastItem().gameObject);
                 }
-
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
     }
