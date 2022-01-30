@@ -186,6 +186,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storageTypes: []
+  ignoreItemTypes: 1
   _xSize: 3
   _ySize: 1
   _zSize: 6
@@ -193,6 +194,7 @@ MonoBehaviour:
   _xOffset: 0.3
   _zOffset: 0.3
   _cellSpacing: 0.6
+  requestedQuantity: 1
 --- !u!1 &4454161664815955987
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,8 +335,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0707fbffc7890944a47d0b4ef007466, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inPutStorage: {fileID: 0}
   inPutStorages: []
   outPutStorage: {fileID: 1479692693}
   product: {fileID: 7756472652910948214, guid: 11d0cf84abdc19d41b1a6e82e8376b8b, type: 3}
-  productionSpeed: 0.7
+  productionSpeedFactory: 1

@@ -211,17 +211,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1732517485, guid: 1f61d219820ba584395bc176b0ed91de, type: 3}
-      propertyPath: productionSpeedFactor
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 213142303288565690, guid: 1f61d219820ba584395bc176b0ed91de, type: 3}
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 213142303288565690, guid: 1f61d219820ba584395bc176b0ed91de, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.54
       objectReference: {fileID: 0}
     - target: {fileID: 213142303288565690, guid: 1f61d219820ba584395bc176b0ed91de, type: 3}
       propertyPath: m_LocalPosition.y
@@ -262,10 +258,6 @@ PrefabInstance:
     - target: {fileID: 6136240360411337007, guid: 1f61d219820ba584395bc176b0ed91de, type: 3}
       propertyPath: m_Name
       value: OilFactory
-      objectReference: {fileID: 0}
-    - target: {fileID: 6136240360411337007, guid: 1f61d219820ba584395bc176b0ed91de, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1f61d219820ba584395bc176b0ed91de, type: 3}
@@ -432,6 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _storageTypes: []
+  ignoreItemTypes: 1
   _xSize: 1
   _ySize: 10
   _zSize: 1
@@ -1023,7 +1016,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 327444126788228732, guid: 052cbed3971de314494c8ddfd81ebc63, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -13.17
+      value: -0.15
       objectReference: {fileID: 0}
     - target: {fileID: 327444126788228732, guid: 052cbed3971de314494c8ddfd81ebc63, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1031,7 +1024,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 327444126788228732, guid: 052cbed3971de314494c8ddfd81ebc63, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 20.9
+      value: 15.03
       objectReference: {fileID: 0}
     - target: {fileID: 327444126788228732, guid: 052cbed3971de314494c8ddfd81ebc63, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1065,10 +1058,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlasticFactory
       objectReference: {fileID: 0}
-    - target: {fileID: 4630197450195153099, guid: 052cbed3971de314494c8ddfd81ebc63, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 052cbed3971de314494c8ddfd81ebc63, type: 3}
 --- !u!1001 &6341242112117251891
@@ -1082,21 +1071,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: BottleFactory
       objectReference: {fileID: 0}
-    - target: {fileID: 2212499214954591800, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6096301655175212283, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
-      propertyPath: requestedQuantity
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 6520918613837205647, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
       propertyPath: m_RootOrder
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6520918613837205647, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.09
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: 6520918613837205647, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1104,7 +1085,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6520918613837205647, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 20.9
+      value: -14
       objectReference: {fileID: 0}
     - target: {fileID: 6520918613837205647, guid: b840b9620944d044f9ccdde9f83a4391, type: 3}
       propertyPath: m_LocalRotation.w

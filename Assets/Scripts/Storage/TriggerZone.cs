@@ -28,10 +28,10 @@ public class TriggerZone : MonoBehaviour
         switch ((int)zoneType)
         {
             case (int)ZoneTypes.Get:
-                linkedStorage.SendTo(otherStorage);
+                linkedStorage.SendItemTo(otherStorage);
                 break;
             case (int)ZoneTypes.Set:
-                otherStorage.SendTo(linkedStorage);
+                otherStorage.SendItemTo(linkedStorage);
                 break;
         }
     }

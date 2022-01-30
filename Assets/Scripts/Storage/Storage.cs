@@ -5,6 +5,7 @@ using UnityEngine;
 public class Storage : MonoBehaviour
 {
     [SerializeField] private Item[] _storageTypes;
+    [SerializeField] private bool ignoreItemTypes;
 
     [SerializeField] private int _xSize = 1;
     [SerializeField] private int _ySize = 1;
@@ -17,6 +18,7 @@ public class Storage : MonoBehaviour
     [SerializeField] private float _cellSpacing = 1;
 
     [SerializeField] private int requestedQuantity = 1;
+
 
     private bool initialized;
 
@@ -99,11 +101,11 @@ public class Storage : MonoBehaviour
         }
         else
         {
-            if(CheckRequestedQuantityItems())
+            if (CheckRequestedQuantityItems())
             {
                 for (int j = 0; j < requestedQuantity; j++)
                 {
-                    Destroy(GetLastItem().gameObject);
+                    Destroy(ExtractLastItem().gameObject);
                 }
 
                 return true;
@@ -142,7 +144,7 @@ public class Storage : MonoBehaviour
         }
     }
 
-    public void SendTo(Storage destStorage)
+    public void SendItemTo(Storage destStorage)
     {
         if (destStorage.CheckOverflow() || destStorage.Delivering)
         {
@@ -150,7 +152,10 @@ public class Storage : MonoBehaviour
         }
         else
         {
-            destStorage.PutInItem(GetLastItem());
+            if (destStorage.CheckItemType(GetLastItem()))
+            {
+                destStorage.PutInItem(ExtractLastItem());
+            }
         }
     }
 
@@ -168,7 +173,32 @@ public class Storage : MonoBehaviour
             }
         }
     }
-    private Item GetLastItem()
+
+    private bool CheckItemType(Item srcItem)
+    {
+        if (ignoreItemTypes)
+        {
+            return true;
+        }
+        else if(srcItem != null)
+        {
+            for (int i = 0; i < _storageTypes.Length; i++)
+            {
+                if (srcItem.GetType() == _storageTypes[i].GetType())
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    private Item ExtractLastItem()
     {
         if (Delivering)
         {
@@ -185,6 +215,25 @@ public class Storage : MonoBehaviour
             itemToExport?.transform.SetParent(null);
 
             return itemToExport;
+        }
+    }
+
+    private Item GetLastItem()
+    {
+        if (Delivering)
+        {
+            return null;
+        }
+        else
+        {
+            if(_storageEmptyPointer > 0)
+            {
+                return _storagedObjects[_storageEmptyPointer - 1];
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 
